@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<title>频道信息</title>
+		<script type="text/javascript" src="../zepto/zepto.js" ></script>
+		<script>
+			document.addEventListener("DOMContentLoaded",function(){
+				var url = window.location.href;
+				var str = url.substring(url.lastIndexOf("?")+1);
+				var H1 = $("h1");
+				$.ajax({
+					url:"http://apis.baidu.com/showapi_open_bus/channel_news/search_news",
+					headers:{
+						apikey:'bfa91e993c34940be862874bca50f785'
+					},
+					data:{
+						channelId:str,
+					},
+					success:function(res){
+						 
+						
+						$.each(res.showapi_res_body.pagebean.contentlist, function(idx,item) {
+							H1.html(item.channelName);
+							idx+=1;
+							var $ul = $("<ul/>");
+							var $title = $("<li/>");
+							var $desc = $("<li/>");
+							var $linkTime = $("<li/>");
+							$title.attr("id","title").html(idx+"、"+item.title).appendTo($ul);
+							$desc.attr("id","content").html("<p>"+item.desc+"</p>").appendTo($ul);
+							var $a = $("<a/>");
+							$a.attr("href",item.link).html("详细链接").appendTo($linkTime);
+							var $span = $("<span/>");
+							$span.html(item.pubDate).appendTo($linkTime);
+							$linkTime.appendTo($ul);
+							$ul.appendTo("body");
+						});
+					}
+				})
+			})
+		</script>
+		<style>
+			body{
+				margin: 0;
+				padding: 0;
+				background-color:blanchedalmond;
+			}
+			ul{
+				border: 1px solid lightslategray;
+				margin: 15px 0;
+				padding: 10px 10px;
+				list-style: none;
+			}
+			#title{
+				font-weight: bold;
+			}
+			#content{
+				text-indent: 20px;
+			}
+			ul li{
+				overflow: hidden;
+			}
+			li a{display: inline-block;float: left;color: pink;}
+			li span{display: inline-block;float: right;}
+			h1{border: 3px solid red;padding: 15px 0;text-align: center;margin: 0;}
+			
+		</style>
+	</head>
+	<body>
+		<h1></h1>
+	</body>
+</html>

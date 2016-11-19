@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>music player</title>
+		<link rel="stylesheet" href="font/iconfont.css" />
+		<link rel="stylesheet" href="css/swiper.min.css"/>
+		<script type="text/javascript" src="js/swiper.min.js" ></script>
+		<script type="text/javascript" src="zepto/zepto.js" ></script>
+		<script type="text/javascript" src="zepto/touch.js" ></script>
+		<script type="text/javascript" src="js/music.js" ></script>
+		<style>
+		 input[type="range"] {
+                -webkit-box-shadow: 0 1px 0 0px #424242, 0 1px 0 #060607 inset, 0px 2px 10px 0px grey inset, 1px 0px 2px rgba(0, 0, 0, 0.4) inset, 0 0px 1px rgba(0, 0, 0, 0.6) inset;
+                background-color: grey;
+                border-radius: 15px;
+                width: 100%;
+                -webkit-appearance: none;
+                height:0.2rem;
+            }
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                cursor: default;
+                /*top: -5px;*/
+                height: 1rem;
+                width: 1rem;
+                /*transform: translateY(-4px);*/
+                background: none repeat scroll 0 0 green;
+                border-radius: 15px;
+                -webkit-box-shadow: 0 -1px 1px greenyellow inset;
+            }
+			body,html{padding: 0;margin: 0;background-color: #EEEEEE; font-family: "宋体";}
+			header{background-color: green;padding: 15px 0;text-align: center;}
+			header span{color:#fff;display: inline-block;margin-right: 20px;}
+			#search{float: right;}
+			#my{float: left;margin-left: 20px;}
+			.blod{font-weight: bolder;}
+			section{background-color: #fff;margin-top:1rem;padding-bottom: 4rem;}
+			#myhabit div{display: flex;}
+			#myhabit ul{padding:0;list-style: none;display: flex;flex: 1;flex-direction: column;align-items: center;}
+			#myhabit  ul li{margin-top: 10px;}
+			.mylist{display: flex;margin-top: 1rem;background-color: #fff;flex-direction: column;}
+			.mylist ol{list-style: none;display: flex;width: 100%;height: 100%;padding: 0;margin: 0;flex-direction: column;}
+			.mylist ol li{display: flex;width: 94%;padding: 1rem 3%;border-bottom: 1px solid gainsboro;}
+			.mylistheard{justify-content: center;border-bottom: 1px solid grey;font-weight: bold;display: flex;width: 94%;padding: 1rem 3%;}
+			.mylist .sole{display: flex;flex-direction: column;flex: 3;}
+			.mylist #del{flex: 1;align-items: center;font-size: 1.5rem;display: flex;}
+			.mylist #del span{display: block;flex: 1;width: 2rem;}
+			.mylist li span{display: block;text-overflow:ellipsis;white-space: nowrap;overflow: hidden;width: 200px;}
+			ul .iconfont{font-size: 2rem;}
+			footer{position: fixed;height: 4rem;width:100%;background-color: #fff;bottom: 0;z-index: 1000;}
+			.play{display: flex;width: 100%;height: 100%;}
+			.play img{height: 4rem;width:4rem;display: flex;border-radius: 50%;}
+			.play img.playing{animation: rotatePic 10s linear infinite;}
+			.play-staus{display: flex;flex: 1;width: 100%;padding: 0 3%;}
+			.process{display: block;width: 100%;height: 0.5rem;border-radius: 15px;}
+			.song{position: absolute;top: 1rem;height: 3rem;left: 5rem;width: 100px;}
+			.song span{display: block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;}
+			.songname{height: 1rem;display: block;font-size: 14px;}
+			.singer{height: 1rem;display: block;font-size: 10px;color: gray;margin-top: 5px;}
+			.playmain{height: 3rem;position: absolute;top: 1rem;right: 3%;display: flex;align-items: center;}
+			.playmain span{font-size: 2rem;padding-left: 1rem;}
+			#model{margin-bottom: 5px;}
+			.searchsong{display: flex;width: 80%;height: 1.5rem;margin: 5px auto;}
+			.searchsong input{display: flex;flex: 5;border: 1px solid grey;}
+			.searchsong span{display: flex;flex: 1;padding-left: 4px;}
+			.songlist{list-style: none;display: flex;margin-top: 10px;padding: 5px 0;border-top: 1px solid gainsboro;flex-direction: column;width: 100%;}
+			.songlist li{display: flex;width: 100%;padding: 3%;border-bottom: 1px solid gainsboro;}
+			.songlist .sole{display: flex;flex: 3;flex-direction: column;width: 60%;}
+			.songlist #add{display: flex;flex: 1;align-items: center;font-size:1.5rem ;}
+			.songlist li span{display: block;flex:1;width:100%;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+			input:focus{border:1px solid green;}
+			#btnPlay{font-size: 2.5rem;}
+			.active{color: green;}
+			@keyframes rotatePic {
+				0%{transform:rotate(0deg);}
+				100%{transform:rotate(360deg);}
+			}
+		</style>
+	</head>
+	<body>
+		 <header><span id="my" class="iconfont icon-comiiscaidan"></span><span>我的</span><span>音乐馆</span><span>乐库</span><span id="search" class="iconfont icon-sousuo"></span></header>
+		<section class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide" id="myhabit">
+					<div>						
+					<ul>
+						<li class="iconfont icon-yinle"></li>
+						<li>本地歌曲</li>
+					</ul>
+					<ul>
+						<li class="iconfont icon-xiazai"></li>
+						<li>下载歌曲</li>
+					</ul>
+					<ul>
+						<li class="iconfont icon-wodexingqiuzuijinbofang"></li>
+						<li>最近播放</li>
+					</ul>
+					</div>
+					<div>						
+					<ul>
+						<li class="iconfont icon-woxihuande"></li>
+						<li>我喜欢</li>
+					</ul>
+					<ul>
+						<li class="iconfont icon-mvxiazaibiaoshi"></li>
+						<li>下载MV</li>
+					</ul>
+					<ul>
+						<li class="iconfont icon-dingwei"></li>
+						<li>听识歌曲</li>
+					</ul>
+					</div>
+					<div class="mylist">
+							<div class="mylistheard">我 的 歌 单</div>
+						<ol id="minelist">
+							 
+						</ol>
+					</div>
+				</div>
+				<div class="swiper-slide">系统更新中</div>
+				<div class="swiper-slide">
+					<div class="searchsong">		
+						<input type="text" id="txt"/>
+						<span id="find">搜索</span>
+					</div>
+					<ul class="songlist">
+						 <li>
+						 	<div class="sole" id="9ad4449ff2e83a4d3a931c8982fc900d">
+						 		<span><marquee>Iris And Roy</marquee></span>
+						 		<span><marquee>Randy Newman、the natural - Iris And Roy【《天赋》原声带】</marquee></span>
+						 	</div>
+						 	<div class="iconfont icon-tianjia1" id="add"></div></li>
+					</ul>
+				</div>
+			</div>			
+		</section>
+		
+		
+		<footer>
+			<div class="play">
+				<img id="singimg" src="img/default.jpg" />
+				<div class="play-staus">
+					<input type="range" class="process" value="0"></input>
+					<div class="song">
+						<span class="songname"></span>
+						<span class="singer"></span>
+					</div>
+					<div class="playmain">
+						<span class="iconfont icon-shangyiqu" id="btnPrev"></span>
+						<span class="iconfont icon-bofangzanting" id="btnPlay"></span>
+						<span class="iconfont icon-xiayiqu" id="btnNext"></span>
+						<span id="model" class="iconfont icon-yuledanquxunhuan" data-model="1" title="单曲循环"></span>
+					</div>
+				</div>
+				 
+			</div>
+		</footer>
+	</body>
+	<script> 
+ 		var mySwiper = new Swiper('section.swiper-container',{
+			direction : 'horizontal',
+		})
+	</script>
+</html>
