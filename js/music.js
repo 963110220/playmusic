@@ -148,9 +148,9 @@ document.addEventListener("DOMContentLoaded",function(){
 				$div.addClass("sole").attr("id",item.id).appendTo($li);
 				var $div = $("<div/>");
 				var $span = $("<span/>");
-				$span.addClass('iconfont icon-woxihuande').appendTo($div);
+				$span.attr("id","like").addClass('iconfont icon-woxihuande').appendTo($div);
 				var $span = $("<span/>");
-				$span.addClass('iconfont icon-shanchu').appendTo($div);
+				$span.attr('id','dislike').addClass('iconfont icon-shanchu').appendTo($div);
 				$div.attr("id","del").appendTo($li);
 				$li.appendTo($minelist);	
 			 	})
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded",function(){
 				$div.addClass("sole").attr("id",item.id).appendTo($li);
 				var $div = $("<div/>");
 				var $span = $("<span/>");
-				$span.addClass('iconfont icon-woxihuande').appendTo($div);
+				$span.attr('id','like').addClass('iconfont icon-woxihuande').appendTo($div);
 				var $span = $("<span/>");
-				$span.addClass('iconfont icon-shanchu').appendTo($div);
+				$span.attr('id','dislike').addClass('iconfont icon-shanchu').appendTo($div);
 				$div.attr("id","del").appendTo($li);
 				$li.appendTo($minelist);
 				
@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	});
 	$(".process").on("change",function(){
 		var processval = $(this).val();
+		$(this).css( {'background-size':this.value + '% 100%','background-color':'gray' }); 
 		player.currentTime = player.duration*processval/100;
 	});
 	
@@ -267,7 +268,25 @@ document.addEventListener("DOMContentLoaded",function(){
 	
 	function updateTime(){
 		$(".process").val(player.currentTime/player.duration*100);
+		$(".process").css( {'background-size':this.value + '% 100%','background-color':'green' }); 
 	}
 	
-
+	$('section').on('tap','#dislike',function(){
+		var num = $(this).parent().parent().attr('data-idx');
+		console.log(num);
+		datalist.splice(num,1);
+		playlist = datalist;
+		localStorage.setItem('datalist',JSON.stringify(datalist)); 
+		$(this).parent().parent().remove();
+	})
+	var choose = false;
+	$('section').on('tap','#like',function(){
+		choose = !choose;
+		if(choose ==true){			
+			$(this).addClass('like');
+		}else{
+			$(this).removeClass('like');
+		}
+	});
+	 
 })

@@ -6,18 +6,21 @@
 		<title>music player</title>
 		<link rel="stylesheet" href="font/iconfont.css" />
 		<link rel="stylesheet" href="css/swiper.min.css"/>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
 		<script type="text/javascript" src="js/swiper.min.js" ></script>
 		<script type="text/javascript" src="zepto/zepto.js" ></script>
 		<script type="text/javascript" src="zepto/touch.js" ></script>
 		<script type="text/javascript" src="js/music.js" ></script>
 		<style>
 		 input[type="range"] {
-                -webkit-box-shadow: 0 1px 0 0px #424242, 0 1px 0 #060607 inset, 0px 2px 10px 0px grey inset, 1px 0px 2px rgba(0, 0, 0, 0.4) inset, 0 0px 1px rgba(0, 0, 0, 0.6) inset;
+                /*-webkit-box-shadow: 0 1px 0 0px #424242, 0 1px 0 #060607 inset, 0px 2px 10px 0px grey inset, 1px 0px 2px rgba(0, 0, 0, 0.4) inset, 0 0px 1px rgba(0, 0, 0, 0.6) inset;*/
                 background-color: grey;
                 border-radius: 15px;
                 width: 100%;
                 -webkit-appearance: none;
                 height:0.2rem;
+                background: -webkit-linear-gradient(green, green) no-repeat;
+				background-size: 0% 100%;
             }
             input[type="range"]::-webkit-slider-thumb {
                 -webkit-appearance: none;
@@ -30,6 +33,19 @@
                 border-radius: 15px;
                 -webkit-box-shadow: 0 -1px 1px greenyellow inset;
             }
+            input[type=range]::-webkit-fill-lower {
+			    /*进度条已填充的部分*/
+			    height: 22px;
+			    border-radius: 10px;
+			    background: green;
+			}
+			
+			input[type=range]::-webkit-fill-upper {
+			    /*进度条未填充的部分*/
+			    height: 22px;
+			    border-radius: 10px;
+			    background: gray;
+			}
 			body,html{padding: 0;margin: 0;background-color: #EEEEEE; font-family: "宋体";}
 			header{background-color: green;padding: 15px 0;text-align: center;}
 			header span{color:#fff;display: inline-block;margin-right: 20px;}
@@ -55,24 +71,25 @@
 			.play img.playing{animation: rotatePic 10s linear infinite;}
 			.play-staus{display: flex;flex: 1;width: 100%;padding: 0 3%;}
 			.process{display: block;width: 100%;height: 0.5rem;border-radius: 15px;}
-			.song{position: absolute;top: 1rem;height: 3rem;left: 5rem;width: 100px;}
-			.song span{display: block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;}
-			.songname{height: 1rem;display: block;font-size: 14px;}
-			.singer{height: 1rem;display: block;font-size: 10px;color: gray;margin-top: 5px;}
+			.song{position: absolute;top: 1rem;height: 3rem;left: 5rem;width: 100px;display: flex;flex-direction: column;}
+			.song span{display: block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;height: 50%;}
+			.songname{height: 1rem;display: block;font-size: 10px;}
+			.singer{height: 1rem;display: block;font-size: 10px;color: gray;}
 			.playmain{height: 3rem;position: absolute;top: 1rem;right: 3%;display: flex;align-items: center;}
 			.playmain span{font-size: 2rem;padding-left: 1rem;}
 			#model{margin-bottom: 5px;}
-			.searchsong{display: flex;width: 80%;height: 1.5rem;margin: 5px auto;}
+			/*.searchsong{display: flex;width: 80%;height: 1.5rem;margin: 5px auto;}
 			.searchsong input{display: flex;flex: 5;border: 1px solid grey;}
-			.searchsong span{display: flex;flex: 1;padding-left: 4px;}
+			.searchsong span{display: flex;flex: 1;padding-left: 4px;}*/
 			.songlist{list-style: none;display: flex;margin-top: 10px;padding: 5px 0;border-top: 1px solid gainsboro;flex-direction: column;width: 100%;}
 			.songlist li{display: flex;width: 100%;padding: 3%;border-bottom: 1px solid gainsboro;}
 			.songlist .sole{display: flex;flex: 3;flex-direction: column;width: 60%;}
-			.songlist #add{display: flex;flex: 1;align-items: center;font-size:1.5rem ;}
+			.songlist #add{display: flex;flex: 1;align-items: center;font-size:2.5rem ;justify-content: center;}
 			.songlist li span{display: block;flex:1;width:100%;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
 			input:focus{border:1px solid green;}
 			#btnPlay{font-size: 2.5rem;}
 			.active{color: green;}
+			.like{color: red;}
 			@keyframes rotatePic {
 				0%{transform:rotate(0deg);}
 				100%{transform:rotate(360deg);}
@@ -121,10 +138,20 @@
 				</div>
 				<div class="swiper-slide">系统更新中</div>
 				<div class="swiper-slide">
-					<div class="searchsong">		
+					<!--<div class="searchsong">		
 						<input type="text" id="txt"/>
 						<span id="find">搜索</span>
-					</div>
+					</div>-->
+					<div class="row">
+					  <div class="col-md-4">
+					    <div class="input-group">
+					      <input type="text" class="form-control" id="txt">
+					      <span class="input-group-btn" id="find">
+					        <button class="btn btn-default" type="button">搜索</button>
+					      </span>
+					    </div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->
 					<ul class="songlist">
 						 <li>
 						 	<div class="sole" id="9ad4449ff2e83a4d3a931c8982fc900d">
